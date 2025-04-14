@@ -8,3 +8,62 @@
   --color-g1: #0DD101;
   --color-g2: #96EB00;
 }
+
+.ant-input:focus {
+  border: 1px solid white;
+  box-shadow: 0 0 5px 1px var(--color-primary);
+}
+
+.ant-input:hover {
+  border: 1px solid var(--color-primary);
+  box-shadow: 0 0 5px 1px var(--color-primary);
+}
+
+/* For Input.Password */
+.ant-input-affix-wrapper:focus-within,
+.ant-input-affix-wrapper-focused {
+  border: 1px solid white;
+  box-shadow: 0 0 5px 1px var(--color-primary);
+}
+
+.ant-input-affix-wrapper:hover {
+  border: 1px solid var(--color-primary);
+  box-shadow: 0 0 5px 1px var(--color-primary);
+}
+
+/* Target primary buttons */
+.ant-btn-primary {
+  background-color: var(--color-primary);
+  border-radius: 0.1rem;
+  /* Change border radius */
+}
+
+/* Hover background color */
+.ant-btn-primary:hover {
+  background-color: #74e035 !important;
+  /* Custom hover color */
+  border-color: #74e035 !important;
+}
+
+.ant-checkbox-input {
+  background-color: var(--color-primary);
+}
+
+/* Checked state */
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* Hover while checked */
+.ant-checkbox-checked:hover .ant-checkbox-inner {
+  background-color: #74e035 !important;
+  border-color: #74e035 !important;
+}
+
+/* Hover before checked (optional, for border effect) */
+.ant-checkbox-wrapper:hover .ant-checkbox-inner {
+  background-color: #74e035 !important;
+  border-color: #74e035 !important;
+  border-color: var(--color-primary);
+}
