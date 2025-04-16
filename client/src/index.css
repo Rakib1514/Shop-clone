@@ -5,6 +5,7 @@
   --color-primary: #72BF44;
   --color-secondary: #000000;
   --color-base-100: #FFFFFF;
+  --color-base-200: #F2F2F2;
   --color-g1: #0DD101;
   --color-g2: #96EB00;
 }
@@ -66,4 +67,9 @@
   background-color: #74e035 !important;
   border-color: #74e035 !important;
   border-color: var(--color-primary);
+}
+
+.active{
+  background-color: var(--color-secondary);
+  color: white;
 }

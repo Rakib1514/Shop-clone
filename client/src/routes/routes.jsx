@@ -1,8 +1,11 @@
 import { createBrowserRouter } from "react-router";
-import MainLayout from "../layouts/MainLayout";
-import Home from "../pages/home/Home";
-import SignUp from "../pages/authentication/SignUp";
 import App from "../App";
+import DashboardLayout from "../layouts/DashboardLayout";
+import MainLayout from "../layouts/MainLayout";
+import SignIn from "../pages/authentication/SignIn";
+import SignUp from "../pages/authentication/SignUp";
+import Home from "../pages/home/Home";
+import Profile from "../pages/profile/Profile";
 
 const router = createBrowserRouter([
   {
@@ -17,8 +20,28 @@ const router = createBrowserRouter([
             Component: Home,
           },
           {
-            path: "auth/sign-up",
-            Component: SignUp,
+            path: "auth",
+            children: [
+              {
+                path: "sign-in",
+                Component: SignIn,
+              },
+              {
+                path: "sign-up",
+                Component: SignUp,
+              },
+            ],
+          },
+
+          // Dashboard Layout
+          {
+            Component: DashboardLayout,
+            children: [
+              {
+                path: "profile",
+                Component: Profile,
+              },
+            ],
           },
         ],
       },

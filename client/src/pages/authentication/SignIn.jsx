@@ -1,20 +1,20 @@
 import { Button, Checkbox, Form, Input } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading, userSignUp } from "../../redux/authSlice";
 import { Link, useNavigate } from "react-router";
+import { setLoading, userSignIn } from "../../redux/authSlice";
 
-const SignUp = () => {
+const SignIn = () => {
   const [errorMsg, setErrorMSg] = useState("");
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
-  const firstNameRef = useRef(null);
+  const emailRef = useRef(null);
 
   useEffect(() => {
-    if (firstNameRef.current) {
-      firstNameRef.current.focus();
+    if (emailRef.current) {
+      emailRef.current.focus();
     }
   }, []);
 
@@ -23,9 +23,11 @@ const SignUp = () => {
     try {
       setErrorMSg("");
       dispatch(setLoading(true));
-      const result = await userSignUp(values.email, values.password);
-      console.log(result);
-      navigate("/");
+      const result = await userSignIn(values.email, values.password);
+
+      if (result.user) {
+        navigate("/");
+      }
     } catch (error) {
       setErrorMSg(error.message);
     } finally {
@@ -37,36 +39,11 @@ const SignUp = () => {
     <div className="container mx-auto px-4 min-h-screen">
       <div className="max-w-xl border border-black mx-auto">
         <p className="bg-black text-white text-center text-xl font-semibold py-2">
-          Register with email
+          Sign-in with email
         </p>
 
         <div className="flex  justify-center items-center px-4 my-4">
-          <Form
-            onFinish={onFinish}
-            // labelCol={{ span:  }}
-            // wrapperCol={{ span: 14 }}
-            layout="vertical"
-            className="w-full "
-          >
-            <div className="flex gap-4">
-              <Form.Item
-                name={"firstName"}
-                label="First Name"
-                className="w-full"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your First Name",
-                  },
-                ]}
-              >
-                <Input ref={firstNameRef} />
-              </Form.Item>
-              <Form.Item name={"lastName"} label="Last Name" className="w-full">
-                <Input />
-              </Form.Item>
-            </div>
-
+          <Form onFinish={onFinish} layout="vertical" className="w-full ">
             <Form.Item
               name={"email"}
               label="Email"
@@ -76,13 +53,9 @@ const SignUp = () => {
                   required: true,
                   message: "Please Provide an email",
                 },
-                {
-                  type: "email",
-                  message: "Please input a valid email",
-                },
               ]}
             >
-              <Input placeholder="Please enter your email" />
+              <Input placeholder="Please enter your email" ref={emailRef} />
             </Form.Item>
 
             <Form.Item
@@ -94,28 +67,17 @@ const SignUp = () => {
                   required: true,
                   message: "Password is required",
                 },
-                {
-                  min: 6,
-                  message: "Password must be at least 6 characters",
-                },
-                {
-                  max: 32,
-                  message: "Password must be no more than 32 characters",
-                },
-                {
-                  pattern: /[0-9]/,
-                  message: "Password must include at least one number",
-                },
               ]}
             >
               <Input.Password />
             </Form.Item>
 
-            {errorMsg === "Firebase: Error (auth/email-already-in-use)." && (
+            <Form.Item name="remember" valuePropName="checked" label={null}>
+              <Checkbox>Remember me</Checkbox>
+            </Form.Item>
+            {errorMsg && (
               <Form.Item label={null}>
-                <p className="text-xs text-red-600">
-                  Email already Registered. Please Sign-in
-                </p>
+                <p className="text-xs text-red-600">{errorMsg}</p>
               </Form.Item>
             )}
 
@@ -126,15 +88,15 @@ const SignUp = () => {
                 htmlType="submit"
                 className="w-full bg-primary"
               >
-                Create Account
+                Sign-in
               </Button>
             </Form.Item>
             <Form.Item label={null}>
               <Link
-                to={"/auth/sign-in"}
+                to={"/auth/sign-up"}
                 style={{ color: "black", textDecoration: "underline" }}
               >
-                Already Have an account? Sign-in here
+                New Here? Please Create an account.
               </Link>
             </Form.Item>
           </Form>
@@ -144,4 +106,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignIn;

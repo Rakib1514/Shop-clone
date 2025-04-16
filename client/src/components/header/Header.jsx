@@ -1,18 +1,36 @@
-import { FaCartArrowDown, FaHeart, FaSearch } from "react-icons/fa";
-import brandLogo from "../../assets/brandLogo.svg";
-import { GoArrowSwitch } from "react-icons/go";
-import { MdAccountCircle } from "react-icons/md";
 import { Badge } from "antd";
-import { IoMdMenu } from "react-icons/io";
-import Search from "./Search";
 import { useState } from "react";
+import { FaCartArrowDown, FaHeart, FaSearch } from "react-icons/fa";
+import { GoArrowSwitch } from "react-icons/go";
+import { IoMdMenu } from "react-icons/io";
+import { MdAccountCircle, MdOutlineLogout } from "react-icons/md";
+import brandLogo from "../../assets/brandLogo.svg";
+import Search from "./Search";
 // eslint-disable-next-line no-unused-vars
-import { motion, AnimatePresence } from "framer-motion";
-import PromoBarTop from "./PromoBarTop";
+import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router";
+import PromoBarTop from "./PromoBarTop";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading, userSignOut } from "../../redux/authSlice";
+import AccountButton from "./AccountButton";
 
 const Header = () => {
   const [searchToggle, setSearchToggle] = useState(false);
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+
+  const handleSignOut = async () => {
+    try {
+      dispatch(setLoading(true));
+
+      const result = await userSignOut();
+      console.log(result);
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
 
   return (
     <>
@@ -20,11 +38,11 @@ const Header = () => {
         <PromoBarTop />
       </div>
       <header className="bg-secondary sticky top-0">
-        <nav className="container mx-auto py-3 px-1 grid grid-cols-3 ">
+        <nav className="container mx-auto py-3 px-4 grid grid-cols-3 ">
           <button className="text-white text-4xl lg:hidden">
             <IoMdMenu />
           </button>
-          <Link to={'/'}>
+          <Link to={"/"}>
             <img
               src={brandLogo}
               alt="Ryans Brand Logo"
@@ -65,13 +83,17 @@ const Header = () => {
                 <GoArrowSwitch className="text-xl text-white" />
               </Badge>
             </button>
-            <Link to={"/auth/sign-up"}>
-              <button className="hidden lg:block cursor-pointer">
+            <AccountButton user={user} handleSignOut={handleSignOut}/>
+            {user && (
+              <button
+                onClick={handleSignOut}
+                className="lg:hidden cursor-pointer"
+              >
                 <Badge count={0} offset={[0, -5]} size="small">
-                  <MdAccountCircle className="text-xl text-white" />
+                  <MdOutlineLogout className="text-xl text-white" />
                 </Badge>
               </button>
-            </Link>
+            )}
           </div>
         </nav>
         <AnimatePresence>
