@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const express = require("express");
 const connectDB = require("./src/config/db");
+const userRoutes = require("./src/routes/userRoutes");
+const errorMiddleware = require("./src/middleware/errorMiddleware");
 require("dotenv").config();
 
 const app = express();
@@ -12,7 +14,13 @@ app.use(cors());
 
 connectDB();
 
-app.get("/", async (req, res) => {
+// Routes
+app.use("/api/users", userRoutes);
+
+// Error Middleware after the routes
+app.use(errorMiddleware)
+
+app.get("/", (req, res) => {
   res.send("Ritox DB is connected");
 });
 

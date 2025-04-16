@@ -1,7 +1,7 @@
 const errorMiddleware = async (error, req, res, next) => {
   console.log("Error caught:", error);
 
-  if (error.name === "validationError") {
+  if (error.name === "ValidationError") {
     const messages = Object.values(error.errors).map((err) => err.message);
     res.status(400).json({
       error: "validation Error",
@@ -20,3 +20,5 @@ const errorMiddleware = async (error, req, res, next) => {
    // Fallback for unhandled errors
   res.status(500).json({ error: "Internal Server Error" });
 };
+
+module.exports = errorMiddleware
