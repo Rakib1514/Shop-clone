@@ -22,9 +22,7 @@ const Header = () => {
   const handleSignOut = async () => {
     try {
       dispatch(setLoading(true));
-
-      const result = await userSignOut();
-      console.log(result);
+      await userSignOut();
     } catch (error) {
       console.log(error.message);
     } finally {
@@ -83,7 +81,7 @@ const Header = () => {
                 <GoArrowSwitch className="text-xl text-white" />
               </Badge>
             </button>
-            <AccountButton user={user} handleSignOut={handleSignOut}/>
+            <AccountButton user={user} handleSignOut={handleSignOut} />
             {user && (
               <button
                 onClick={handleSignOut}

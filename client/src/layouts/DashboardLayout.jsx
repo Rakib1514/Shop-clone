@@ -34,7 +34,7 @@ const DashboardLayout = () => {
             <NavLink to={'/favorite'} className={'active:bg-amber-400 px-2 py-1 rounded-xs'}>Favorite</NavLink>
           </div>
         </div>
-        <div className="border border-black h-96 col-span-9">
+        <div className="h-96 col-span-9">
           <Outlet />
         </div>
       </div>

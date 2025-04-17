@@ -77,7 +77,7 @@ const AccountButton = ({ user, handleSignOut }) => {
           <AnimatePresence>
             {dropdownOpen && (
               <motion.div
-                className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20 overflow-hidden"
+                className="absolute right-0 mt-2 w-48 rounded-xs shadow-lg z-20 overflow-hidden bg-base-300"
                 variants={dropdownVariants}
                 initial="hidden"
                 animate="visible"
@@ -85,21 +85,21 @@ const AccountButton = ({ user, handleSignOut }) => {
               >
                 <Link
                   to="/profile"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-base-400 hover:text-white"
                   onClick={() => setDropdownOpen(false)}
                 >
                   Profile
                 </Link>
                 <Link
                   to="/cart"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-base-400 hover:text-white"
                   onClick={() => setDropdownOpen(false)}
                 >
                   Cart
                 </Link>
                 <Link
                   to="/wishlist"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-base-400 hover:text-white"
                   onClick={() => setDropdownOpen(false)}
                 >
                   Wishlist
@@ -109,7 +109,7 @@ const AccountButton = ({ user, handleSignOut }) => {
                     handleSignOut();
                     setDropdownOpen(false);
                   }}
-                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-base-400 hover:text-white"
                 >
                   Logout
                 </button>

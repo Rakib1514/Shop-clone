@@ -8,7 +8,7 @@ import auth from "../firebase/firebase.config";
 
 const initialState = {
   user: null,
-  isLoading: false,
+  isLoading: true,
 };
 
 const authSlice = createSlice({

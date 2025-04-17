@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading, userSignUp } from "../../redux/authSlice";
 import { Link, useNavigate } from "react-router";
+import axios from "axios";
 
 const SignUp = () => {
   const [errorMsg, setErrorMSg] = useState("");
@@ -23,13 +24,36 @@ const SignUp = () => {
     try {
       setErrorMSg("");
       dispatch(setLoading(true));
-      const result = await userSignUp(values.email, values.password);
-      console.log(result);
+      const { user } = await userSignUp(values.email, values.password);
+
+      const newUser = {
+        name: values.firstName + " " + values.lastName,
+        userId: user?.uid,
+        email: user?.email,
+      };
+
+      const res = await createUserToDB(newUser);
+
+      if (!res.success) {
+        throw new Error("User Creation at db failed");
+      }
+
+      alert("User created to db");
+
       navigate("/");
     } catch (error) {
       setErrorMSg(error.message);
     } finally {
       dispatch(setLoading(false));
+    }
+  };
+
+  const createUserToDB = async (userInfo) => {
+    try {
+      const res = await axios.post("/api/users", userInfo);
+      return res.data;
+    } catch (err) {
+      console.log(err.message);
     }
   };
 
