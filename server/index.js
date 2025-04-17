@@ -18,7 +18,7 @@ connectDB();
 app.use("/api/users", userRoutes);
 
 // Error Middleware after the routes
-app.use(errorMiddleware)
+app.use(errorMiddleware);
 
 app.get("/", (req, res) => {
   res.send("Ritox DB is connected");
