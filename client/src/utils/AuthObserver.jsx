@@ -11,8 +11,19 @@ const AuthObserver = () => {
     dispatch(setLoading(true));
 
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      dispatch(setUser(currentUser));
-      dispatch(setLoading(false));
+      if (currentUser) {
+        const userInfo = {
+          name: currentUser?.displayName,
+          email: currentUser?.email,
+          uid: currentUser?.uid,
+        };
+
+        dispatch(setUser(userInfo));
+        dispatch(setLoading(false));
+      } else {
+        dispatch(setUser(null));
+        dispatch(setLoading(false));
+      }
     });
 
     return () => unsubscribe();

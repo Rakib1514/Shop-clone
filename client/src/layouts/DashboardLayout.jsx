@@ -22,7 +22,7 @@ const DashboardLayout = () => {
             />
             <div>
               <p className="text-xl font-bold">
-                {user?.displayName || "Rakibul Islam"}
+                {user?.name || "N/A"}
               </p>
               <p className="text-gray-400">{user?.email}</p>
             </div>
