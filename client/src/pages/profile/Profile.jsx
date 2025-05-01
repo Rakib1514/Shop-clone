@@ -1,9 +1,36 @@
+import React, { useState } from "react";
 import { Button, Form, Input, message, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import { Link } from "react-router";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 const Profile = () => {
-  const handleProfileUpdate = () => {};
+  const [fileList, setFileList] = useState([]);
+  const [btnLoading, setBtnLoading] = useState(false);
+
+  const { user } = useSelector((state) => state.auth);
+
+  const handleProfileUpdate = async (values) => {
+    const { image, ...rest } = values;
+
+    try {
+      setBtnLoading(true);
+      const res = await axios.patch(
+        `/api/users/${user.userId}`,
+        rest
+      );
+
+      if (!res.data.success) {
+        throw new Error(res.message);
+      }
+      alert(res.data.message);
+    } catch (error) {
+      alert(error.message);
+      console.log(error)
+    } finally {
+      setBtnLoading(false);
+    }
+  };
 
   const props = {
     name: "file",
@@ -11,7 +38,9 @@ const Profile = () => {
     headers: {
       authorization: "authorization-text",
     },
+    fileList, // Use fileList state here
     onChange(info) {
+      setFileList(info.fileList); // Update fileList state
       if (info.file.status !== "uploading") {
         console.log(info.file, info.fileList);
       }
@@ -31,25 +60,42 @@ const Profile = () => {
           onFinish={handleProfileUpdate}
           layout="vertical"
           className="w-full grid lg:grid-cols-4 grid-cols-1 gap-4"
+          initialValues={user}
         >
-          <Form.Item name={"name"} label="Name" className="w-full lg:col-span-2">
+          <Form.Item
+            name={"name"}
+            label="Name"
+            className="w-full lg:col-span-2"
+          >
             <Input placeholder="Please enter your full name" />
           </Form.Item>
-          <Form.Item name={"email"} label="Email" className="w-full lg:col-span-2">
+          <Form.Item
+            name={"email"}
+            label="Email"
+            className="w-full lg:col-span-2"
+          >
             <Input placeholder="Please your Email" />
           </Form.Item>
-          <Form.Item name={"something"} label="Need to set" className="w-full lg:col-span-2">
-            <Input placeholder="This input need to add" />
+          <Form.Item label="Need to set" className="w-full lg:col-span-2">
+            <Input placeholder="This input need to add" disabled />
           </Form.Item>
-          <Form.Item name={"address"} label="Address" className="w-full lg:col-span-2">
+          <Form.Item
+            name={"address"}
+            label="Address"
+            className="w-full lg:col-span-2"
+          >
             <Input placeholder="Please enter your address" />
           </Form.Item>
 
-          <Form.Item name={"gender"} label="Gender" className="w-full lg:col-span-2">
+          <Form.Item
+            name={"gender"}
+            label="Gender"
+            className="w-full lg:col-span-2"
+          >
             <Input />
           </Form.Item>
 
-          <Form.Item name={"photoURL"} label="Image" className="lg:col-span-2">
+          <Form.Item name={"image"} label="Image" className="lg:col-span-2">
             <Upload {...props}>
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
@@ -66,6 +112,8 @@ const Profile = () => {
               type="primary"
               htmlType="submit"
               className="w-full bg-primary"
+              loading={btnLoading}
+              disabled={btnLoading}
             >
               Update Information
             </Button>

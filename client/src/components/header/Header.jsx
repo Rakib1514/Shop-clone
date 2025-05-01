@@ -35,7 +35,7 @@ const Header = () => {
       <div className="hidden lg:block">
         <PromoBarTop />
       </div>
-      <header className="bg-secondary sticky top-0">
+      <header className="bg-secondary sticky top-0 z-10">
         <nav className="container mx-auto py-3 px-4 grid grid-cols-3 ">
           <button className="text-white text-4xl lg:hidden">
             <IoMdMenu />
