@@ -34,4 +34,28 @@ const getSingleUser = async (req, res, next) => {
   }
 };
 
-module.exports = { createUser, getSingleUser };
+// update user by uid
+const updateUser = async (req, res, next) => {
+  const { uid } = req.params;
+
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { userId: uid },
+      { $set: req.body },
+      { new: true, runValidators: true }
+    ).select("-__v");
+    if (!updatedUser) {
+      const err = new Error("User not found");
+      err.statusCode = 404;
+      throw err;
+    }
+    res.status(200).json({
+      success: true,
+      message: "user updated successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { createUser, getSingleUser, updateUser };
