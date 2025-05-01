@@ -1,8 +1,9 @@
+import axios from "axios";
+import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setLoading, setUser } from "../redux/authSlice";
-import { onAuthStateChanged } from "firebase/auth";
 import auth from "../firebase/firebase.config";
+import { setLoading, setUser } from "../redux/authSlice";
 
 const AuthObserver = () => {
   const dispatch = useDispatch();
@@ -10,18 +11,16 @@ const AuthObserver = () => {
   useEffect(() => {
     dispatch(setLoading(true));
 
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
-        const userInfo = {
-          name: currentUser?.displayName,
-          email: currentUser?.email,
-          uid: currentUser?.uid,
-        };
+        const res = await axios.get(`/api/users/${currentUser.uid}`);
+        console.log(res.data.data);
 
-        dispatch(setUser(userInfo));
+        dispatch(setUser(res.data.data));
         dispatch(setLoading(false));
       } else {
         dispatch(setUser(null));
+
         dispatch(setLoading(false));
       }
     });
